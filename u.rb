@@ -298,51 +298,66 @@ module Enumerable
 
   # 13. proc defined in method and used with block(&)
   # def my_map_proc(&proc_arg)
-  # 	arr = nil
+
+  #   arr = nil
+    
   # 	my_type = lambda do |type|
   # 		arr = self.instance_of?(type) ? self.to_a : self
-  # 	end
+  #   end
+    
   # 	my_type.call(self.class)
 
   # 	if proc_arg
-  # 		ary = []
+  #     ary = []
+      
   # 		arr.my_each do |e|
   # 			ary << proc_arg.call(e)
-  # 		end
+  #     end
+      
   # 		ary
   # 	else
   # 		to_enum(__method__)
-  # 	end
+  #   end
+    
   # end
 
   # 13. proc defined in method and used with yield
   # def my_map_proc(proc = nil)
+
   # 	arr = nil
   # 	my_type = lambda do |type|
   # 		arr = self.instance_of?(type) ? self.to_a : self
-  # 	end
-  # 	my_type.call(self.class)
-  # 	if block_given?
+  #   end
+    
+  #   my_type.call(self.class)
+    
+  #   if block_given?
+      
   # 		proc = Proc.new do |num|
   # 			yield(num)
-  # 		end
-  # 		ary = []
+  #     end
+      
+  #     ary = []
+      
   # 		arr.my_each do |e|
   # 			ary << proc.call(e)
   # 		end
   # 		ary
   # 	else
   # 		to_enum(__method__)
-  # 	end
+  #   end
+    
   # end
 
   # 13. proc defined in parameters(deprecated)
   # def my_map_proc (proc_arg = Proc.new)
+
   # 	arr = nil
   # 	my_type = lambda do |type|
   # 		arr = self.instance_of?(type) ? self.to_a : self
   # 	end
-  # 	my_type.call(self.class)
+  #   my_type.call(self.class)
+    
   # 	if proc_arg || !proc_arg.nil?
   # 		ary = []
   # 		arr.my_each do |e|
@@ -351,18 +366,19 @@ module Enumerable
   # 		ary
   # 	else
   # 		to_enum(__method__)
-  # 	end
+  #   end
+    
   # end
 
   # 13.
-  def my_map_proc(proc_arg)
+  def my_map_proc(proc_arg = nil)
     arr = nil
     my_type = lambda do |type|
       arr = instance_of?(type) ? to_a : self
     end
     my_type.call(self.class)
 
-    if proc_arg
+    if proc_arg.instance_of? Proc
       ary = []
       arr.my_each do |e|
         ary << proc_arg.call(e)
@@ -381,16 +397,18 @@ module Enumerable
     end
     my_type.call(self.class)
 
-    if block
-      ary = []
-      arr.my_each do |e|
-        ary << block.call(e)
-      end
-      ary
-    elsif !proc_arg.nil?
+    if proc_arg.instance_of? Proc and block
+      to_enum(__method__)
+    elsif proc_arg.instance_of? Proc
       ary = []
       arr.my_each do |e|
         ary << proc_arg.call(e)
+      end
+      ary
+    elsif block
+      ary = []
+      arr.my_each do |e|
+        ary << block.call(e)
       end
       ary
     else
@@ -415,7 +433,7 @@ end
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
 
-# arr = [1, 2, 3, 4, 5]
+arr = [1, 2, 3, 4, 5]
 # ary = [1, 2, 4, 2]
 # ary = []
 
@@ -465,10 +483,10 @@ end
 # puts multiply_els(arr) { |sum, n| sum * n }
 
 #-------------------------Proc
-# proc = Proc.new { |num| num + 2 }
+# proc = Proc.new { |num| num * 4 }
 # p arr.my_map_proc(proc)
 
-# p arr.my_map_proc {|num| num + 3 }
+# p arr.my_map_proc { |num| num + 3 }
 #--------------------------
 
 #------------------------Proc or Block
@@ -476,4 +494,11 @@ end
 # p arr.my_map_proc_or_block(proc)
 
 # p arr.my_map_proc_or_block { |num| num + 2 }
+#---------------------------
+
+#------------------------Proc and Block
+# proc = Proc.new { |num| num + 2 }
+# p arr.my_map_proc_or_block(proc)
+
+# p arr.my_map_proc_or_block(proc) { |num| num + 2 }
 #---------------------------
