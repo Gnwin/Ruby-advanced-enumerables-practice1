@@ -300,25 +300,25 @@ module Enumerable
   # def my_map_proc(&proc_arg)
 
   #   arr = nil
-    
+
   # 	my_type = lambda do |type|
   # 		arr = self.instance_of?(type) ? self.to_a : self
   #   end
-    
+
   # 	my_type.call(self.class)
 
   # 	if proc_arg
   #     ary = []
-      
+
   # 		arr.my_each do |e|
   # 			ary << proc_arg.call(e)
   #     end
-      
+
   # 		ary
   # 	else
   # 		to_enum(__method__)
   #   end
-    
+
   # end
 
   # 13. proc defined in method and used with yield
@@ -328,17 +328,17 @@ module Enumerable
   # 	my_type = lambda do |type|
   # 		arr = self.instance_of?(type) ? self.to_a : self
   #   end
-    
+
   #   my_type.call(self.class)
-    
+
   #   if block_given?
-      
+
   # 		proc = Proc.new do |num|
   # 			yield(num)
   #     end
-      
+
   #     ary = []
-      
+
   # 		arr.my_each do |e|
   # 			ary << proc.call(e)
   # 		end
@@ -346,7 +346,7 @@ module Enumerable
   # 	else
   # 		to_enum(__method__)
   #   end
-    
+
   # end
 
   # 13. proc defined in parameters(deprecated)
@@ -357,7 +357,7 @@ module Enumerable
   # 		arr = self.instance_of?(type) ? self.to_a : self
   # 	end
   #   my_type.call(self.class)
-    
+
   # 	if proc_arg || !proc_arg.nil?
   # 		ary = []
   # 		arr.my_each do |e|
@@ -367,7 +367,7 @@ module Enumerable
   # 	else
   # 		to_enum(__method__)
   #   end
-    
+
   # end
 
   # 13.
@@ -433,7 +433,7 @@ end
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
 
-arr = [1, 2, 3, 4, 5]
+# arr = [1, 2, 3, 4, 5]
 # ary = [1, 2, 4, 2]
 # ary = []
 
