@@ -438,18 +438,18 @@ arr = [1, 2, 3, 4, 5]
 # ary = []
 
 # arr.my_each { |e| puts e }
-# arr.my_each_with_index { |v, i| puts "#{v} and #{i}" }
+arr.my_each_with_index { |v, i| puts "#{v} and #{i}" }
 
 # p arr.my_select { |e| e != 2 }
 
-puts arr.my_all? { |e| e == 2 }                             #=> false
-puts %w[ant bear cat].my_all? { |word| word.length >= 3 }   #=> true
-puts %w[ant bear cat].my_all? { |word| word.length >= 4 }   #=> false
-puts %w[ant bear cat].my_all?(/a/)                          #=> true
-puts [1, 2i, 3.14].my_all?(Numeric)                         #=> true
-puts [nil, true, 99].my_all?                                #=> false
-puts [].my_all?                                             #=> true
-puts [1, 2i, 3.14].my_all?(3) {|word| word == 3}            #=> err enumerable
+# puts arr.my_all? { |e| e == 2 }
+# puts %w[ant bear cat].my_all? { |word| word.length >= 3 }
+# puts %w[ant bear cat].my_all? { |word| word.length >= 4 }
+# puts %w[ant bear cat].my_all?(/a/)
+# puts [1, 2i, 3.14].my_all?(Numeric) #=> true
+# puts [nil, true, 99].my_all? #=> false
+# puts [].my_all?
+# puts [1, 2i, 3.14].my_all?(3) {|word| word == 3}                             #=> err enumerable
 
 # puts %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
 # puts %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> true
@@ -458,19 +458,19 @@ puts [1, 2i, 3.14].my_all?(3) {|word| word == 3}            #=> err enumerable
 # puts [nil, true, 99].my_any?                              #=> true
 # puts [].my_any?                                           #=> false
 
-# puts %w[ant bear cat].my_none? { |word| word.length == 5 }  #=> true
-# puts %w[ant bear cat].my_none? { |word| word.length >= 4 }  #=> false
-# puts %w[ant bear cat].my_none?(/d/)                         #=> true
-# puts [1, 3.14, 42].my_none?(Float)                          #=> false
-# puts [].my_none?                                            #=> true
-# puts [nil].my_none?                                         #=> true
-# puts [nil, false].my_none?                                  #=> true
-# puts [nil, false, true].my_none?                            #=> false
+# puts %w[ant bear cat].my_none? { |word| word.length == 5 } #=> true
+# puts %w[ant bear cat].my_none? { |word| word.length >= 4 } #=> false
+# puts %w[ant bear cat].my_none?(/d/) #=> true
+# puts [1, 3.14, 42].my_none?(Float) #=> false
+# puts [].my_none? #=> true
+# puts [nil].my_none? #=> true
+# puts [nil, false].my_none? #=> true
+# puts [nil, false, true].my_none? #=> false
 
-# puts ary.my_count                     #=> 4
-# puts ary.my_count(2)                  #=> 2
-# puts ary.my_count{ |x| x%2==0 }       #=> 3
-# puts ary.my_count(2) { |x| x%2==0 }   #=> 3
+# puts ary.my_count               #=> 4
+# puts ary.my_count(2)            #=> 2
+# puts ary.my_count{ |x| x%2==0 } #=> 3
+# puts ary.my_count(2) { |x| x%2==0 } #=> 3
 
 # p arr.my_map { |e| e + 2 }
 
