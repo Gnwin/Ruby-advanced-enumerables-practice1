@@ -433,7 +433,7 @@ end
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
 
-arr = [1, 2, 3, 4, 5]
+# arr = [1, 2, 3, 4, 5]
 # ary = [1, 2, 4, 2]
 # ary = []
 
@@ -442,14 +442,14 @@ arr = [1, 2, 3, 4, 5]
 
 # p arr.my_select { |e| e != 2 }
 
-puts arr.my_all? { |e| e == 2 }                             #=> false
-puts %w[ant bear cat].my_all? { |word| word.length >= 3 }   #=> true
-puts %w[ant bear cat].my_all? { |word| word.length >= 4 }   #=> false
-puts %w[ant bear cat].my_all?(/a/)                          #=> true
-puts [1, 2i, 3.14].my_all?(Numeric)                         #=> true
-puts [nil, true, 99].my_all?                                #=> false
-puts [].my_all?                                             #=> true
-puts [1, 2i, 3.14].my_all?(3) {|word| word == 3}            #=> err enumerable
+# puts arr.my_all? { |e| e == 2 }                             #=> false
+# puts %w[ant bear cat].my_all? { |word| word.length >= 3 }   #=> true
+# puts %w[ant bear cat].my_all? { |word| word.length >= 4 }   #=> false
+# puts %w[ant bear cat].my_all?(/a/)                          #=> true
+# puts [1, 2i, 3.14].my_all?(Numeric)                         #=> true
+# puts [nil, true, 99].my_all?                                #=> false
+# puts [].my_all?                                             #=> true
+# puts [1, 2i, 3.14].my_all?(3) {|word| word == 3}            #=> err enumerable
 
 # puts %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
 # puts %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> true
