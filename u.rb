@@ -113,7 +113,7 @@ module Enumerable
     if block_given? && word.nil?
       my_each do |e|
         if yield(e)
-					any = !any
+          any = !any
           break
         end
       end
@@ -232,11 +232,11 @@ module Enumerable
       if num.instance_of?(Integer)
         return 'The argument is an Integer and there are no elements in your array' if empty?
 
-        return count if num < 0
+        return count if num.negative?
 
         count = num
       elsif num.instance_of?(Float)
-				count
+        count
       elsif num.nil? && empty?
         count = length
       elsif num.nil?
@@ -417,7 +417,7 @@ end
 # 12.
 def multiply_els(val = nil)
   my_type = lambda do |elem|
-    arr = elem.instance_of?(Array) ? elem : elem.to_a
+    elem.instance_of?(Array) ? elem : elem.to_a
   end
 
   if block_given? && !val.nil?
@@ -438,7 +438,7 @@ end
 
 # TEST SAMPLES AND ANSWERS
 # TURN OFF COMMENT ON arr(LINE 432) AND USE THE SAMPLES BELOW TO TEST THE METHODS
-# arr = [1, 2, 3, 4, 5]
+arr = [1, 2, 3, 4, 5]
 # ary = [1, 2, 4, 2]
 # ary = []
 
@@ -505,8 +505,8 @@ end
 #---------------------------------------------------------------------------
 
 #---12------------------------MULTIPLY_ELS----
-# puts multiply_els(arr) { |sum, n| sum * n }
-# puts multiply_els(5..10) { |sum, n| sum * n }
+puts multiply_els(arr) { |sum, n| sum * n }
+puts multiply_els(5..10) { |sum, n| sum * n }
 #--------------------------------------------------
 
 #---13----------------------PROC---
