@@ -437,8 +437,8 @@ end
 # rubocop:enable Metrics/PerceivedComplexity
 
 # TEST SAMPLES AND ANSWERS
-# TURN OFF COMMENT ON arr(LINE 432) AND USE THE SAMPLES BELOW TO TEST THE METHODS
-arr = [1, 2, 3, 4, 5]
+# TURN OFF COMMENT ON arr(LINE 432 to LINE 443) AND USE THE SAMPLES BELOW TO TEST THE METHODS
+# arr = [1, 2, 3, 4, 5]
 # ary = [1, 2, 4, 2]
 # ary = []
 
@@ -505,8 +505,8 @@ arr = [1, 2, 3, 4, 5]
 #---------------------------------------------------------------------------
 
 #---12------------------------MULTIPLY_ELS----
-puts multiply_els(arr) { |sum, n| sum * n }
-puts multiply_els(5..10) { |sum, n| sum * n }
+# puts multiply_els(arr) { |sum, n| sum * n }
+# puts multiply_els(5..10) { |sum, n| sum * n }
 #--------------------------------------------------
 
 #---13----------------------PROC---
