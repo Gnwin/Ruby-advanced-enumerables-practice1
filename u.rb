@@ -111,15 +111,9 @@ module Enumerable
     end
 
     if block_given? && word.nil?
-      ary = []
-      idx = 0
       my_each do |e|
-        ary << yield(e)
-        idx += 1
-      end
-      ary.my_each do |e|
-        if e
-          any = !any
+        if yield(e)
+					any = !any
           break
         end
       end
@@ -238,7 +232,11 @@ module Enumerable
       if num.instance_of?(Integer)
         return 'The argument is an Integer and there are no elements in your array' if empty?
 
+        return count if num < 0
+
         count = num
+      elsif num.instance_of?(Float)
+				count
       elsif num.nil? && empty?
         count = length
       elsif num.nil?
@@ -254,10 +252,10 @@ module Enumerable
   # 10.
   def my_map
     arr = nil
-    my_type = lambda do |type|
-      arr = instance_of?(type) ? to_a : self
+    my_type = lambda do
+      arr = instance_of?(Array) ? self : to_a
     end
-    my_type.call(self.class)
+    my_type.call
 
     if block_given?
       ary = []
@@ -274,16 +272,15 @@ module Enumerable
   def my_inject(arg = nil)
     arr = nil
 
-    my_type = lambda do |type|
-      arr = instance_of?(type) ? to_a : self
+    my_type = lambda do
+      arr = instance_of?(Array) ? self : to_a
     end
-
-    my_type.call(self.class)
+    my_type.call
 
     if block_given?
       if arg.nil?
         acc = 0
-        acc = arr[0] if arr.my_all?(String)
+        acc = arr[acc] if arr.my_all?(String)
       else
         acc = arg
       end
@@ -373,10 +370,10 @@ module Enumerable
   # 13.
   def my_map_proc(proc_arg = nil)
     arr = nil
-    my_type = lambda do |type|
-      arr = instance_of?(type) ? to_a : self
+    my_type = lambda do
+      arr = instance_of?(Array) ? self : to_a
     end
-    my_type.call(self.class)
+    my_type.call
 
     if proc_arg.instance_of? Proc
       ary = []
@@ -392,10 +389,10 @@ module Enumerable
   # 14.
   def my_map_proc_or_block(proc_arg = nil, &block)
     arr = nil
-    my_type = lambda do |type|
-      arr = instance_of?(type) ? to_a : self
+    my_type = lambda do
+      arr = instance_of?(Array) ? self : to_a
     end
-    my_type.call(self.class)
+    my_type.call
 
     if proc_arg.instance_of? Proc and block
       to_enum(__method__)
@@ -419,9 +416,14 @@ end
 
 # 12.
 def multiply_els(val = nil)
+  my_type = lambda do |elem|
+    arr = elem.instance_of?(Array) ? elem : elem.to_a
+  end
+
   if block_given? && !val.nil?
+    arr1 = my_type.call(val)
     acc = 1
-    val.my_inject do |_s, e|
+    arr1.my_inject do |_s, e|
       acc = yield(acc, e)
     end
     acc
@@ -429,19 +431,30 @@ def multiply_els(val = nil)
     to_enum(__method__)
   end
 end
+
 # rubocop:enable Metrics/ModuleLength
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
 
+# TEST SAMPLES AND ANSWERS
+# TURN OFF COMMENT ON arr(LINE 432) AND USE THE SAMPLES BELOW TO TEST THE METHODS
 # arr = [1, 2, 3, 4, 5]
 # ary = [1, 2, 4, 2]
 # ary = []
 
+#---3---------------------MY EACH---
 # arr.my_each { |e| puts e }
+#-----------------------------------------
+
+#---4--------------------MY EACH WITH INDEX--------
 # arr.my_each_with_index { |v, i| puts "#{v} and #{i}" }
+#---------------------------------------------------------------
 
+#---5-----------------------MY SELECT-----
 # p arr.my_select { |e| e != 2 }
+#------------------------------------------------------
 
+#---6------------------------MY ALL----------------------
 # puts arr.my_all? { |e| e == 2 }                             #=> false
 # puts %w[ant bear cat].my_all? { |word| word.length >= 3 }   #=> true
 # puts %w[ant bear cat].my_all? { |word| word.length >= 4 }   #=> false
@@ -450,14 +463,18 @@ end
 # puts [nil, true, 99].my_all?                                #=> false
 # puts [].my_all?                                             #=> true
 # puts [1, 2i, 3.14].my_all?(3) {|word| word == 3}            #=> err enumerable
+#-----------------------------------------------------------------------------------
 
-# puts %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
-# puts %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> true
-# puts %w[ant bear cat].my_any?(/d/)                        #=> false
-# puts [nil, true, 99].my_any?(Integer)                     #=> true
-# puts [nil, true, 99].my_any?                              #=> true
-# puts [].my_any?                                           #=> false
+#---7-------------------------MY ANY----------------
+# puts %w[ant bear cat].my_any? { |word| word.length >= 3 }   #=> true
+# puts %w[ant bear cat].my_any? { |word| word.length >= 4 }   #=> true
+# puts %w[ant bear cat].my_any?(/d/)                          #=> false
+# puts [nil, true, 99].my_any?(Integer)                       #=> true
+# puts [nil, true, 99].my_any?                                #=> true
+# puts [].my_any?                                             #=> false
+#---------------------------------------------------------------------------
 
+#---8------------------------MY NONE---------------
 # puts %w[ant bear cat].my_none? { |word| word.length == 5 }  #=> true
 # puts %w[ant bear cat].my_none? { |word| word.length >= 4 }  #=> false
 # puts %w[ant bear cat].my_none?(/d/)                         #=> true
@@ -466,39 +483,49 @@ end
 # puts [nil].my_none?                                         #=> true
 # puts [nil, false].my_none?                                  #=> true
 # puts [nil, false, true].my_none?                            #=> false
+#--------------------------------------------------------------------------
 
+#---9------------------------MY COUNT-----------
 # puts ary.my_count                     #=> 4
 # puts ary.my_count(2)                  #=> 2
+# puts ary.my_count(-2)                #=> 0
 # puts ary.my_count{ |x| x%2==0 }       #=> 3
 # puts ary.my_count(2) { |x| x%2==0 }   #=> 3
+#-------------------------------------------------------
 
+#---10----------------------MY MAP------
 # p arr.my_map { |e| e + 2 }
+#---------------------------------------------------
 
+#---11-----------------------MY INJECT-----
 # puts arr.my_inject { |sum, n| sum + n }
 # puts (5..10).my_inject { |sum, n| sum + n }
 # puts (5..10).my_inject(2) { |sum, n| sum * n }
 # puts %w{ cat sheep bear }.my_inject { |memo, word| longest = memo.length > word.length ? memo : word }
+#---------------------------------------------------------------------------
 
-# puts arr.multiply_els { |sum, n| sum * n }
+#---12------------------------MULTIPLY_ELS----
 # puts multiply_els(arr) { |sum, n| sum * n }
+# puts multiply_els(5..10) { |sum, n| sum * n }
+#--------------------------------------------------
 
-#-------------------------Proc
+#---13----------------------PROC---
 # proc = Proc.new { |num| num * 4 }
 # p arr.my_map_proc(proc)
 
 # p arr.my_map_proc { |num| num + 3 }
-#--------------------------
+#----------------------------------------
 
-#------------------------Proc or Block
+#---14---------------------PROC OR BLOCK---
 # proc = Proc.new { |num| num + 2 }
 # p arr.my_map_proc_or_block(proc)
 
-# p arr.my_map_proc_or_block { |num| num + 2 }
-#---------------------------
+# p arr.my_map_proc_or_block { |num| num + 4 }
+#-------------------------------------------------
 
-#------------------------Proc and Block
+#------------------------Proc and Block----
 # proc = Proc.new { |num| num + 2 }
 # p arr.my_map_proc_or_block(proc)
 
-# p arr.my_map_proc_or_block(proc) { |num| num + 2 }
-#---------------------------
+# p arr.my_map_proc_or_block(proc) { |num| num + 5 }
+#-------------------------------------------------------
